@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+    <title>Trippy.js</title>
+    <style>
+        body, html {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        #trippy {
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="trippy" height=200 width=600 />
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="trippy.js"></script>
+
+    <script type="text/javascript">
+        $(window).resize(function() {
+            $('canvas#trippy')[0].width  = $(window).width() - 5;
+            $('canvas#trippy')[0].height = $(window).height() - 5;
+        }).resize();
+
+        $(document).ready(function() {
+            $("canvas#trippy").trippy();
+        });
+    </script>
+</body>
