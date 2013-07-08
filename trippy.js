@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Trippy runs a small animation of an observer flying through
  * a field of stars on a canvas element.
@@ -8,6 +6,7 @@
  * It has not been tested on anything more powerful.
  */
 function trippy(canvas, options) {
+    "use strict";
 
     /*
      * Sanity and argument checks
