@@ -142,18 +142,18 @@ function trippy(canvas, options) {
 
     // If requested dot is small enough, approximate it to
     // a rectangle.
-    var performanceDot = function(ctx, x, y, size) {
+    ctx.performanceDot = function(x, y, size) {
         // Cut off drawing size
         if (size < 0.2) {
             // do nothing
 
         // Cheap drawing size
         } else if(size < 1) {
-            ctx.rect(x-size, y-size, 2*size, 2*size);
+            this.rect(x-size, y-size, 2*size, 2*size);
 
         // Regular drawing
         } else {
-            ctx.arc(x, y, size, 0, Math.PI*2, true);
+            this.arc(x, y, size, 0, Math.PI*2, true);
         }
     }
 
@@ -225,10 +225,8 @@ function trippy(canvas, options) {
 
             // Draw point to screen
             ctx.beginPath();
-            performanceDot(
-                ctx,
-                center_x_to_canvas(point_x), center_y_to_canvas(point_y),
-                size
+            ctx.performanceDot(
+                center_x_to_canvas(point_x), center_y_to_canvas(point_y), size
             );
             ctx.closePath();
             ctx.fillStyle = color;
