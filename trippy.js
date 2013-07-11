@@ -114,6 +114,50 @@ function trippy(canvas, options) {
     }
 
 
+    var checkPerformance = (function() {
+        if(document.location.search.match("debug=true")) {
+            var old_time = window.performance.now();
+            var rep = 0;
+            var num_reps = 100;
+
+            console.log("Outputting timing averaged over "+num_reps+" reps.");
+
+            return function() {
+                rep++;
+
+                if(rep%num_reps == 0) {
+                    var time = window.performance.now();
+                    var diff = time - old_time;
+
+                    old_time = time;
+
+                    console.debug(diff/num_reps);
+                }
+            }
+        } else {
+            return function() {};
+        }
+    })();
+
+
+    // If requested dot is small enough, approximate it to
+    // a rectangle.
+    var performanceDot = function(ctx, x, y, size) {
+        // Cut off drawing size
+        if (size < 0.2) {
+            // do nothing
+
+        // Cheap drawing size
+        } else if(size < 1) {
+            ctx.rect(x-size, y-size, 2*size, 2*size);
+
+        // Regular drawing
+        } else {
+            ctx.arc(x, y, size, 0, Math.PI*2, true);
+        }
+    }
+
+
 
     /**
      * Run trippy
@@ -181,11 +225,10 @@ function trippy(canvas, options) {
 
             // Draw point to screen
             ctx.beginPath();
-            ctx.arc(
-                center_x_to_canvas(point_x),
-                center_y_to_canvas(point_y),
-                size,
-                0, Math.PI*2, true
+            performanceDot(
+                ctx,
+                center_x_to_canvas(point_x), center_y_to_canvas(point_y),
+                size
             );
             ctx.closePath();
             ctx.fillStyle = color;
@@ -193,7 +236,11 @@ function trippy(canvas, options) {
 
             // Update point
             step_point_forward(i, velocity, time_step);
+
         }
+
+        // Check performance
+        checkPerformance();
 
     }, step_interval);
 }
